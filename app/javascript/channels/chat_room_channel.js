@@ -42,10 +42,11 @@ const chatRoomChannel = consumer.subscriptions.create("ChatRoomChannel", {
     }else{
       if (data.message) {
         //$('#messages').append(`<p class='received'> mensagem` + '</p>')
+        let message = parseInt(data.message);
 
         if (data.message.length ==1) {//escolheu uma opção
-          console.log(data.message);
-          switch (data.message) {
+          console.log('typeof'+typeof message );
+          switch (message) {
             case 1:
               $('#messages').append(`<p class='received'> Para entrar em contato diretamente por e-mail:
                 <b>contato@elos.vc</b>` + '</p>');
@@ -94,7 +95,10 @@ const chatRoomChannel = consumer.subscriptions.create("ChatRoomChannel", {
           }
 
          
-        }//tem mais caracteres
+        }else{//tem mais caracteres
+          $('#messages').append(`<p class='received'> Certo, estou anotando tudo aqui...</b>
+               ` + '</p>');
+        }
         
       }
     }
