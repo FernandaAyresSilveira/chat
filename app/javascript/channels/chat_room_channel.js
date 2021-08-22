@@ -25,11 +25,22 @@ const chatRoomChannel = consumer.subscriptions.create("ChatRoomChannel", {
   },
 
   assistant(data){
-    if (data.name) {
-      $('#messages').append(`<p class="announce"><em>${data.name}</em> seja bem-vindo(a)</p>`)
-      $('#messages').append(`<p class='received'> Em que posso lhe ajudar?` + '</p>')
-      $('#messages').append(`<p class='received'> 
-        Escolha a opção: <br>
+    var msg = '';
+    var send = 'assistant';
+   
+    if (data.name) { 
+
+      msg = `<p class="announce"><em>${data.name}</em> seja bem-vindo(a)</p>`;
+      this.perform('speak',{ msg, send });//enviando a msg p bd
+      $('#messages').append(msg);
+      //this.perform('speak', { message, name })
+
+      msg =  `<p class='received'> Em que posso lhe ajudar?` + '</p>';
+      $('#messages').append(msg);
+      this.perform('speak',{ msg, send });
+
+      msg = `<p class='received'> 
+        Escolha uma opção: <br>
         1. E-mail para contato <br>
         2. Dúvidas sobre Elos <br>
         3. Elogios <br>
@@ -38,7 +49,9 @@ const chatRoomChannel = consumer.subscriptions.create("ChatRoomChannel", {
         6. Acesso por celular e tablet<br>
         7. Qual câmera posso utilizar?<br>
         8. Criando sua conta<br>
-        ` + '</p>')
+        ` + '</p>';
+      $('#messages').append( msg );
+      this.perform('speak',{ msg, send });
     }else{
       if (data.message) {
         //$('#messages').append(`<p class='received'> mensagem` + '</p>')
