@@ -11,10 +11,9 @@ class ChatRoomChannel < ApplicationCable::Channel
   end
 
   def speak(data)
-    @message = Message.new(message: data["message"],send:data["name"])
+    @message = Message.new(message: data["message"],send:data["name"]) 
     @message.save
 
-    #@message = Message.order("created_at DESC").limit(1)
     
     ActionCable.server.broadcast "chat_room_channel", message: data["message"], sent_by: data["name"]
   end

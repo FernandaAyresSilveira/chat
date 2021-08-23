@@ -36,12 +36,8 @@ const chatRoomChannel = consumer.subscriptions.create("ChatRoomChannel", {
       msg = `<p class="announce"><em>${data.name}</em> seja bem-vindo(a)</p>`;
 
       this.perform('speak',{ name: send,message: msg  });//enviando a msg p bd
-
-      $('#messages').append(msg);
-      setInterval(function(){
-        $('#messages').load('PAGINA_A_SER_CARREGADA_NA_DIV.php');
-      }, 1000)
-      //this.perform('speak', { message, name })
+      //$('#messages').append( msg );
+      $('#messages').load('home/last');
 
       msg =  `<p class='received'> Como posso lhe ajudar? </p>`;
       $('#messages').append(msg);
