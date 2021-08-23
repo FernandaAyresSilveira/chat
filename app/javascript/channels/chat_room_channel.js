@@ -1,4 +1,6 @@
 import consumer from "./consumer"
+ 
+
 
 const chatRoomChannel = consumer.subscriptions.create("ChatRoomChannel", {
   connected() {
@@ -25,19 +27,26 @@ const chatRoomChannel = consumer.subscriptions.create("ChatRoomChannel", {
   },
 
   assistant(data){
-    var msg = '';
+    var msg ='';
+    var msg_db ='';
     var send = 'assistant';
    
     if (data.name) { 
 
       msg = `<p class="announce"><em>${data.name}</em> seja bem-vindo(a)</p>`;
-      this.perform('speak',{ msg, send });//enviando a msg p bd
+
+      this.perform('speak',{ name: send,message: msg  });//enviando a msg p bd
+
       $('#messages').append(msg);
+      setInterval(function(){
+        $('#messages').load('PAGINA_A_SER_CARREGADA_NA_DIV.php');
+      }, 1000)
       //this.perform('speak', { message, name })
 
-      msg =  `<p class='received'> Em que posso lhe ajudar?` + '</p>';
+      msg =  `<p class='received'> Como posso lhe ajudar? </p>`;
       $('#messages').append(msg);
-      this.perform('speak',{ msg, send });
+      msg_db = "Como posso lhe ajudar";
+      this.perform('speak',{ name: send,message: msg});
 
       msg = `<p class='received'> 
         Escolha uma opção: <br>
@@ -49,68 +58,92 @@ const chatRoomChannel = consumer.subscriptions.create("ChatRoomChannel", {
         6. Acesso por celular e tablet<br>
         7. Qual câmera posso utilizar?<br>
         8. Criando sua conta<br>
-        ` + '</p>';
+         </p>`;
       $('#messages').append( msg );
-      this.perform('speak',{ msg, send });
+      this.perform('speak',{ name: send,message: msg });
+
     }else{
       if (data.message) {
-        //$('#messages').append(`<p class='received'> mensagem` + '</p>')
+        //$('#messages').append(`<p class='received'> mensagem </p>`)
         let message = parseInt(data.message);
 
         if (data.message.length ==1) {//escolheu uma opção
           console.log('typeof'+typeof message );
           switch (message) {
             case 1:
-              $('#messages').append(`<p class='received'> Para entrar em contato diretamente por e-mail:
-                <b>contato@elos.vc</b>` + '</p>');
+              msg = `<p class='received'> Para entrar em contato diretamente por e-mail:
+                <b>contato@elos.vc</b> </p>`;
+              $('#messages').append(msg);
+                this.perform('speak',{  name: send,message: msg });//enviando a msg p bd
               break;
             case 2:
-              $('#messages').append(`<p class='received'> Deixe aqui sua dúvida que o setor de atendimento entrará
-                em contato o mais breve possível:` + '</p>');
+              msg = `<p class='received'> Deixe aqui sua dúvida que o setor de atendimento entrará
+                em contato o mais breve possível: </p>`;
+              $('#messages').append(msg);
+              msg_db = 'Deixe aqui sua dúvida que o setor de atendimento entrará em contato o mais breve possível';
+              this.perform('speak',{name: send,message: msg });//enviando a msg p bd
             break;
             case 3:
-              $('#messages').append(`<p class='received'> 
-                Deixe aqui seu elogio que o setor de atendimento, sua mensagem é muito importante para nós!` + '</p>')
+              msg = `<p class='received'> 
+                Deixe aqui seu elogio que o setor de atendimento, sua mensagem é muito importante para nós! </p>`;
+              $('#messages').append(msg)
+                this.perform('speak',{ name: send,message: msg });//enviando a msg p bd
             break;
 
             case 4:
-              $('#messages').append(`<p class='received'>                 
+              msg=`<p class='received'>                 
                 Usar o Elos é simples. Basta ter conexão com a internet e uma conta, 
                 nenhuma instalação é necessária. Acesse nossa Central de Ajuda para conhecer 
                 todas as funcionalidades do Elos: 
-                <a href="https://ajuda.elos.vc/kb/article/150995/tudo-sobre-o-elos"> Veja aqui</a>` + '</p>')
+                <a href="https://ajuda.elos.vc/kb/article/150995/tudo-sobre-o-elos"> Veja aqui</a> </p>`;
+              $('#messages').append(msg)
+                this.perform('speak',{  name: send,message: msg});//enviando a msg p bd
             break;
             case 5:
-              $('#messages').append(`<p class='received'> 
+              msg =`<p class='received'> 
                 Não. Somente o dono da sala de videoconferência precisa ter conta, os demais podem entrar na reunião 
-                utilizando a opção "convidado"!` + '</p>')
+                utilizando a opção "convidado"! </p>`;
+              $('#messages').append(msg)
+                this.perform('speak',{ name: send,message: msg });//enviando a msg p bd
             break;
             case 6:
-              $('#messages').append(`<p class='received'> 
-                A plataforma é totalmente online, e você pode acessá-la em qualquer dispositivo que tenha um navegador` + '</p>')
+              msg = `<p class='received'> 
+                A plataforma é totalmente online, e você pode acessá-la em qualquer dispositivo que tenha um navegador </p>`;
+              $('#messages').append(msg)
+                this.perform('speak',{ name: send,message: msg });//enviando a msg p bd
             break;
             case 7:
-              $('#messages').append(`<p class='received'> 
+              msg = `<p class='received'> 
                 Qualquer câmera ou webcam que você conectar no seu computador e for detectada pelo seu sistema operacional será suportada pelo Elos,  
                 inclusive as que já vêm em notebooks. Por facilidade, muitos usuários costumam utilizar webcams 
                 com conexão USB, que possuem qualidade suficiente para a transmissão e que são de fácil conexão 
                 e configuração no sistema. Nos dispositivos mobile (celular e tablet) você pode usar tanto a 
-                câmera frontal quanto a câmera traseira do equipamento.` + '</p>')
+                câmera frontal quanto a câmera traseira do equipamento. </p>`;
+              $('#messages').append(msg)
+                this.perform('speak',{name: send,message: msg});//enviando a msg p bd
             break;
             case 8:
-              $('#messages').append(`<p class='received'> 
-                Criar uma conta Elos é gratuito, basta se registrar <a href="https://elos.vc/language/pt-br?redir_url=%2Fregister"> aqui </a>` + '</p>')
+              msg = `<p class='received'> 
+                Criar uma conta Elos é gratuito, basta se registrar 
+                <a href="https://elos.vc/language/pt-br?redir_url=%2Fregister"> aqui </a> </p>`;
+              $('#messages').append(msg)
+                this.perform('speak',{ name: send,message: msg});//enviando a msg p bd
             break;
             default:
-              $('#messages').append(`<p class='received'> Desculpe, mas não entendi sua mensagem</b>
-               ` + '</p>');
+              msg = `<p class='received'> Desculpe, mas não entendi sua mensagem</b>
+                </p>`;
+              $('#messages').append(msg);
+              this.perform('speak',{ name: send,message: msg});//enviando a msg p bd
               break;
           }
 
          
         }else{//tem mais caracteres
-          $('#messages').append(`<p class='received'> Certo, estou anotando tudo aqui...</b>
-               ` + '</p>');
+          msg = `<p class='received'> Certo, estou anotando tudo aqui...</b>
+                </p>`;
+          $('#messages').append(msg);
+          this.perform('speak',{  name: send,message: msg });//enviando a msg p bd
+
         }
         
       }
@@ -118,9 +151,10 @@ const chatRoomChannel = consumer.subscriptions.create("ChatRoomChannel", {
   },
 
   speak(message) {
-     console.log('speak'+message);
+    console.log('speak'+message);
     let name = sessionStorage.getItem('chat_room_name')
     this.perform('speak', { message, name })
+    //this.perform('speak', { auto_link(message), name })
     this.received({ message,name })
   },
 

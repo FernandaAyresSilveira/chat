@@ -8,6 +8,7 @@ require("turbolinks").start()
 require("@rails/activestorage").start()
 require("channels")
 require("jquery")
+//require ('rails_autolink')
 
 import chatRoomChannel from "../channels/chat_room_channel";
 

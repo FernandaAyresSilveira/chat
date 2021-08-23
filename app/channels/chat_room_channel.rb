@@ -11,16 +11,12 @@ class ChatRoomChannel < ApplicationCable::Channel
   end
 
   def speak(data)
-    @message = Message.new(send:data["name"],message: data["message"])
+    @message = Message.new(message: data["message"],send:data["name"])
     @message.save
+
+    #@message = Message.order("created_at DESC").limit(1)
     
     ActionCable.server.broadcast "chat_room_channel", message: data["message"], sent_by: data["name"]
-    # /*msg = Message.create(name: "David", message: "Code Artist")
-    # msg.save*/
-     # @message = Message.new(send:data["name"],message: data["message"])
-     # @message.save
-
-
   end
 
   def announce(data)
@@ -30,4 +26,5 @@ class ChatRoomChannel < ApplicationCable::Channel
   def perform(message)
     ActionCable.server.broadcast "chat_room_channel", chat_room_name: data["name"], type: data["type"]
   end
+
 end
