@@ -24,7 +24,6 @@ $(document).on('turbolinks:load', function () {
 
   $("form#send_message").on('submit', function(e){
     e.preventDefault('send_message');
-     console.log('send_message');
     let message = $('#message').val();
     if (message.length > 0) {
       chatRoomChannel.speak(message);
@@ -34,7 +33,6 @@ $(document).on('turbolinks:load', function () {
   });
 
   $(window).on('beforeunload', function() {
-     console.log('beforeunload');
     let name = sessionStorage.getItem('chat_room_name')
     chatRoomChannel.announce({ name, type: 'leave'})
   });

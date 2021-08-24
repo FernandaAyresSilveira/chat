@@ -20,17 +20,19 @@ body {
 
 h2 {
   margin: 0;
+  color: #fff;
 }
 
 #main {
   height: 100vh;
-  background-color: bisque;
+  background-color: #1f528b;
   overflow: auto;
 
   h2 {
     text-align: center;
     margin-top: 20px;
     margin-bottom: 20px;
+    color: #fff;
   }
 
   >div#chat_body {
