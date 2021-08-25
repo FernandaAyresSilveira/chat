@@ -36,4 +36,36 @@ $(document).on('turbolinks:load', function () {
     let name = sessionStorage.getItem('chat_room_name')
     chatRoomChannel.announce({ name, type: 'leave'})
   });
+
+  $("#message").keydown(function() {
+    var s = "mconf";
+    var msg = $("#message").val();
+    var newmsg = '';
+    var pattern = '#1f528b';
+    var color = ['#481E9D', '#8D74C0', '#CA4B57', '#2B2D42', '#1C77C3', '#81B29A', '#E98039'];
+    color.sort(() => Math.random() - 0.5);
+    //console.log(color);
+    var meet =  $("#meet").val();
+    console.log(msg.match(/mconf/gi));
+    if (msg.match(/mconf/gi) != null && meet==0) {
+
+      var re = /mconf/gi;
+      newmsg = msg.replace(re,`<b style='color:${color[1]}'>MConf</b>`);
+      //console.log(newmsg);
+
+      $("#message").val('');
+      $("#message").val(newmsg);
+
+      const d = document.getElementById("message");
+      d.innerHTML = newmsg;
+      $("#meet").val(1);
+      $('#main').css('backgroundColor',color[0]);
+    }else{
+      if (msg.indexOf("mconf") == -1) {
+         $("#meet").val(0);
+         $('#main').css('backgroundColor',pattern);
+      }
+    }
+    
+  });
 })

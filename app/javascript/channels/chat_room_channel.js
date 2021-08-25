@@ -62,15 +62,20 @@ const chatRoomChannel = consumer.subscriptions.create("ChatRoomChannel", {
 
     }else{
       if (data.message) {
-        //$('#messages').append(`<p class='received'> mensagem </p>`)
-        let message = parseInt(data.message);
-          let message_complete =  `<p class='sent'> <small>${date_formated}</small><br/> ${message}</p>`;
+       // console.log(data.message);
+        let message = data.message;
+        let message_complete =  `<p class='sent'> <small>${date_formated}</small><br/> ${message}</p>`;
+        this.perform('speak',{  name: name, message:message_complete })
+        message = parseInt(data.message);
 
-          let name =  data.name;
-          this.perform('speak',{  name: name, message:message_complete })
+          
 
 
         if (data.message.length ==1) {//escolheu uma opção
+
+          let name =  data.name;
+
+
           switch (message) {
             case 1:
               msg = `<p class='received'> <small>${date_formated}</small><br/> Para entrar em contato diretamente por e-mail:
@@ -164,12 +169,14 @@ const chatRoomChannel = consumer.subscriptions.create("ChatRoomChannel", {
 
          
         }else{//tem mais caracteres
-          let message = parseInt(data.message);
-          let message_complete =  `<p class='sent'> <small>${date_formated}</small><br/> ${message}</p>`;
+          let message = data.message;
 
           let name =  data.name;
-          this.perform('speak',{  name: name, message:message_complete })
-          //this.perform('speak',{  name: data.name,data.message })
+          this.perform('speak',{  name: name, message:message })
+
+          $('#messages').load('home/last', function(){
+            $('#messages').animate({scrollTop: $('#messages')[0].scrollHeight}, 500);
+          });
           msg = `<p class='received'> <small>${date_formated}</small><br/> Certo, estou anotando tudo aqui...</b>
                 </p>`;
           //$('#messages').append(msg);
@@ -186,7 +193,7 @@ const chatRoomChannel = consumer.subscriptions.create("ChatRoomChannel", {
 
   speak(message) {
     let name = sessionStorage.getItem('chat_room_name')
-    //this.perform('speak', { message, name })    
+    this.perform('speak', { message, name })    
     //this.perform('speak', { auto_link(message), name })
     this.received({ message,name })
   },
